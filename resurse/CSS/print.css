@@ -1,0 +1,120 @@
+@media print {
+    /* banner sus din footer */
+    .footer p {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 10%;
+        width: 80%;
+        margin: 0 auto;
+        text-align: center;
+        border: 1px dotted black;
+        padding: 10px;
+        background-color: white;
+    }
+
+    /* ascunde media */
+    img, iframe, video, .video-wrapper,
+    figure, figcaption,
+    .scroll-to-top {
+        display: none !important;
+    }
+
+    /* grid ca block */
+    .grid-container {
+        display: block !important;
+    }
+
+    .zona {
+        width: 100%;
+        margin-bottom: 20px;
+        page-break-inside: avoid;
+    }
+
+    /* link-uri ca text */
+    a {
+        color: black !important;
+        text-decoration: none !important;
+    }
+
+    /* h1 centrat si separat */
+    h1 {
+        display: block;
+        position: relative;
+        text-align: center;
+        font-size: 2.5em;
+        text-decoration: underline;
+        width: 100%;
+        margin: 150px auto 50px auto;
+        page-break-after: always;
+    }
+
+    .main-nav {
+        display: none !important;
+    }
+
+    .footer {
+        page-break-before: always;
+    }
+
+    /* watermark pe fiecare pagina */
+    body::after {
+        content: "Dobrescu Andrei-Alexandru";
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        width: 100px;
+        height: 2cm;
+        border: double;
+        opacity: 0.65;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transform: rotate(-45deg);
+        z-index: 1000;
+    }
+
+    /* antet pe fiecare pagina */
+    body::before {
+        content: "PigeonMarket - Dobrescu Andrei-Alexandru";
+        position: fixed;
+        top: 0.5cm;
+        left: 1cm;
+        font-size: 10pt;
+        color: gray;
+    }
+
+    @page :left {
+        margin-left: 2.5cm;
+        margin-right: 0.5cm;
+    }
+
+    @page :right {
+        margin-left: 0.5cm;
+        margin-right: 2.5cm;
+    }
+
+    body {
+        background-color: white !important;
+        color: black !important;
+        font-size: 12pt;
+    }
+
+    .container {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* evitam separarea elementelor */
+    p, table, ul, ol, dl, blockquote {
+        page-break-inside: avoid;
+    }
+
+    h2, h3 {
+        page-break-before: auto;
+        page-break-after: avoid;
+    }
+}

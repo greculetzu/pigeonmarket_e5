@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ro">
+<%- include("../fragmente/head") %>
+<body>
+  <%- include("../fragmente/header") %>
+
+  <main class="main-content">
+    <section class="container">
+      <h1>Despre PigeonMarket</h1>
+      <p>PigeonMarket este un proiect columbofil creat în cadrul cursului de Tehnici Web, destinat pasionaților de porumbei voiajori din România și nu numai.</p>
+      <p>Platforma oferă un spațiu virtual unde utilizatorii pot:</p>
+      <ul>
+        <li>Descoperi porumbei valoroși disponibili spre vânzare sau licitație</li>
+        <li>Cumpăra accesorii și hrană specializată</li>
+        <li>Consulta informații despre concursuri și evenimente columbofile</li>
+      </ul>
+      <p>Scopul nostru este să digitalizăm lumea columbofiliei și să conectăm crescătorii printr-o interfață modernă și intuitivă.</p>
+      <p><strong>Realizat de:</strong> Dobrescu Andrei-Alexandru</p>
+    </section>
+
+    <section class="prezentare-video">
+        <h2>Clip de prezentare PigeonMarket</h2>
+        <video controls preload="auto" poster="/resurse/video/poster.png" id="video-vtt"
+               style="width: 100%; max-width: 800px; min-width: 300px; display: block; margin: 2rem auto;">
+          <source src="/resurse/video/porumbei.mp4" type="video/mp4">
+          <source src="/resurse/video/porumbei.webm" type="video/webm">
+          <track src="/resurse/video/ro.vtt" kind="subtitles" srclang="ro" label="Română" default>
+          <track src="/resurse/video/en.vtt" kind="subtitles" srclang="en" label="English">
+          Your browser does not support the video tag.
+        </video>
+      </section>
+      
+
+  </main>
+
+  <%- include("../fragmente/footer") %>
+</body>
+</html>

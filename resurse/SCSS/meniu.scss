@@ -1,0 +1,498 @@
+// Variabile SCSS
+$menu-background: #000;
+$menu-text-color: #fff;
+$menu-hover-bg: #333;
+$menu-hover-text: #fff;
+$submenu-bg: #333;
+$submenu-text: #fff;
+$submenu-hover-bg: #555;
+$submenu-hover-text: #fff;
+$gradient-color-1: #000;
+$gradient-color-2: #fff;
+$transition-time: 0.3s;
+$burger-color: #fff;
+$header-height: 90px;
+$menu-item-border: rgba(255, 255, 255, 0.1);
+
+// Mixin pentru tranzitie
+@mixin transition($property, $duration) {
+  transition: $property $duration ease;
+}
+
+// Mixin pentru efect hover
+@mixin hover-effect {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: $menu-hover-text;
+    @include transition(width, $transition-time);
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+// Mixin pentru media queries
+@mixin media-query($breakpoint) {
+  @if $breakpoint == medium {
+    @media (max-width: 992px) {
+      @content;
+    }
+  } @else if $breakpoint == small {
+    @media (max-width: 768px) {
+      @content;
+    }
+  }
+}
+
+// Stil principal meniu
+.main-nav {
+  font-family: 'Roboto', sans-serif;
+  background-color: $menu-background;
+  position: relative;
+  z-index: 100;
+
+  .menu-toggle {
+    display: none;
+  }
+
+  .menu-icon {
+    display: none;
+    cursor: pointer;
+    padding: 10px;
+
+    span {
+      display: block;
+      width: 25px;
+      height: 2px;
+      background-color: $burger-color;
+      margin: 5px 0;
+      @include transition(all, $transition-time);
+    }
+  }
+
+  .menu {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      position: relative;
+
+      a {
+        display: block;
+        padding: 15px 20px;
+        color: $menu-text-color;
+        text-decoration: none;
+        @include transition(background-color, $transition-time);
+        @include hover-effect;
+
+        &:hover {
+          background-color: $menu-hover-bg;
+          color: $menu-hover-text;
+        }
+      }
+
+      &.has-submenu {
+        > a {
+          position: relative;
+          padding-right: 30px;
+
+          &::after {
+            content: '▼';
+            font-size: 0.8em;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+
+        // Stil pentru hover
+        > a::after {
+          content: '▼';
+          font-size: 0.8em;
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: auto;
+          height: auto;
+          background-color: transparent;
+        }
+
+        // Linie hover
+        > a::before {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background-color: $menu-hover-text;
+          @include transition(width, $transition-time);
+        }
+
+        > a:hover::before {
+          width: 100%;
+        }
+      }
+    }
+
+    .submenu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 200px;
+      background-color: $submenu-bg;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      transform-origin: top center;
+      transform: scaleY(0);
+      opacity: 0;
+      @include transition(all, $transition-time);
+
+      li {
+        width: 100%;
+
+        a {
+          padding: 10px 20px;
+          color: $submenu-text;
+
+          &:hover {
+            background-color: $submenu-hover-bg;
+            color: $submenu-hover-text;
+          }
+        }
+      }
+    }
+
+    li.has-submenu:hover .submenu {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  // Media query pentru ecrane medii
+  @include media-query(medium) {
+    // Bara fixa sus
+    &::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 40px;
+      background-color: rgba($menu-background, 0.9);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 99;
+    }
+
+    .menu-icon {
+      display: block;
+      position: fixed;
+      top: 8px;
+      left: 15px;
+      z-index: 101;
+      padding: 5px;
+
+      span {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background-color: $burger-color;
+        margin: 3px 0;
+        @include transition(all, $transition-time);
+      }
+    }
+
+    .menu-toggle:checked {
+      ~ .menu-icon {
+        span {
+          &:nth-child(1) {
+            transform: rotate(45deg) translate(4px, 4px);
+          }
+
+          &:nth-child(2) {
+            opacity: 0;
+          }
+
+          &:nth-child(3) {
+            transform: rotate(-45deg) translate(4px, -4px);
+          }
+        }
+      }
+
+      ~ .menu {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    .menu {
+      position: fixed;
+      top: 40px;
+      left: 0;
+      width: 100%;
+      background-color: $menu-background;
+      flex-direction: column;
+      transform: translateY(-100%);
+      opacity: 0;
+      visibility: hidden;
+      @include transition(all, $transition-time);
+      padding: 0;
+      margin: 0;
+      box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+
+      li {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid $menu-item-border;
+
+        a {
+          padding: 15px;
+          font-size: 16px;
+          text-align: center;
+
+          &::after {
+            display: none;
+          }
+        }
+
+        .home-link {
+          font-size: 16px;
+          padding: 15px;
+
+          i {
+            font-size: 1rem;
+            margin-right: 5px;
+          }
+        }
+
+        &.has-submenu {
+          > a::after {
+            content: '+';
+            right: 15px;
+            display: block;
+          }
+
+          > a::before {
+            display: none;
+          }
+        }
+      }
+
+      .submenu {
+        position: static;
+        width: 100%;
+        min-width: auto;
+        transform: scaleY(0);
+        max-height: 0;
+        overflow: hidden;
+        background-color: rgba($submenu-bg, 0.8);
+
+        li {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+          a {
+            padding: 12px 15px;
+            font-size: 14px;
+            text-align: center;
+          }
+        }
+      }
+
+      li.has-submenu:hover .submenu,
+      li.has-submenu:focus-within .submenu {
+        transform: scaleY(1);
+        max-height: 500px;
+      }
+    }
+  }
+
+  // Media query pentru ecrane mici
+  @include media-query(small) {
+    // Bara de navigare sus
+    &::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 40px;
+      background-color: rgba($menu-background, 0.9);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 99;
+    }
+
+    .menu-icon {
+      display: block;
+      position: fixed;
+      top: 8px;
+      right: 15px;
+      z-index: 101;
+      padding: 5px;
+
+      span {
+        width: 20px;
+        height: 2px;
+        margin: 3px 0;
+      }
+    }
+
+    .menu-toggle:checked {
+      ~ .menu-icon {
+        span {
+          &:nth-child(1) {
+            transform: rotate(45deg) translate(4px, 4px);
+          }
+
+          &:nth-child(2) {
+            opacity: 0;
+          }
+
+          &:nth-child(3) {
+            transform: rotate(-45deg) translate(4px, -4px);
+          }
+        }
+      }
+
+      ~ .menu {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    .menu {
+      flex-direction: column;
+      position: fixed;
+      top: 40px;
+      left: 0;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      background-color: $menu-background;
+      transform: translateY(-100%);
+      opacity: 0;
+      visibility: hidden;
+      @include transition(all, $transition-time);
+      padding: 0;
+      margin: 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+      li {
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        border-bottom: 1px solid $menu-item-border;
+
+        a {
+          padding: 15px;
+          font-size: 16px;
+          @include transition(all, $transition-time);
+          display: block;
+          width: 100%;
+          text-align: center;
+
+          &::after {
+            display: none;
+          }
+
+          &:hover {
+            background-color: $menu-hover-bg;
+          }
+        }
+
+        &.has-submenu {
+          > a::after {
+            content: '';
+            right: 15px;
+            display: block;
+            font-size: 16px;
+          }
+
+          > a::before {
+            display: none;
+          }
+        }
+      }
+
+      .submenu {
+        position: static;
+        width: 100%;
+        background-color: rgba($submenu-bg, 0.8);
+        transform: scaleY(0);
+        transform-origin: top center;
+        max-height: 0;
+        overflow: hidden;
+
+        li {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+          a {
+            padding: 12px 15px;
+            font-size: 14px;
+            text-align: center;
+          }
+        }
+      }
+
+      li.has-submenu:hover .submenu,
+      li.has-submenu:focus-within .submenu {
+        transform: scaleY(1);
+        max-height: 500px;
+      }
+    }
+  }
+}
+
+// Spatiu sub bara de navigare
+body {
+  padding-top: 40px;
+}
+
+// Titlu neacoperit
+.site-header {
+  margin-top: $header-height;
+  padding-top: 20px;
+}
+
+// Spatiu pentru titlul principal
+h1.site-title {
+  margin-top: 40px;
+}
+
+// Stil text meniuri
+.main-nav .menu li a {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+// Efect submeniu
+@for $i from 1 through 5 {
+  .main-nav .menu > li:nth-child(#{$i}) .submenu {
+    animation-delay: $i * 0.05s;
+    border-top: 2px solid adjust-hue($menu-hover-bg, $i * 30);
+  }
+}
+
+// Spatiu la scroll la sectiunea evenimente
+#calendar-evenimente {
+  scroll-margin-top: 100px;
+}
+
+// Padding pentru continut principal
+.main-content {
+  padding-top: 40px;
+}
