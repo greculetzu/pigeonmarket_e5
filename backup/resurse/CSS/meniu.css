@@ -67,19 +67,6 @@
   top: 50%;
   transform: translateY(-50%);
 }
-.main-nav .menu li.has-submenu > a::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #fff;
-  transition: width 0.3s ease;
-}
-.main-nav .menu li.has-submenu > a:hover::before {
-  width: 100%;
-}
 .main-nav .menu .submenu {
   position: absolute;
   top: 100%;
@@ -100,6 +87,21 @@
 .main-nav .menu .submenu li a {
   padding: 10px 20px;
   color: #fff;
+  position: relative;
+  position: relative;
+}
+.main-nav .menu .submenu li a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #fff;
+  transition: width 0.3s ease;
+}
+.main-nav .menu .submenu li a:hover::after {
+  width: 100%;
 }
 .main-nav .menu .submenu li a:hover {
   background-color: #555;
@@ -207,6 +209,21 @@
   .main-nav .menu .submenu li a {
     padding: 12px 15px;
     font-size: 14px;
+    position: relative;
+    position: relative;
+  }
+  .main-nav .menu .submenu li a::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s ease;
+  }
+  .main-nav .menu .submenu li a:hover::after {
+    width: 100%;
   }
   .main-nav .menu li.has-submenu:hover .submenu,
   .main-nav .menu li.has-submenu:focus-within .submenu {
@@ -310,6 +327,21 @@
   .main-nav .menu .submenu li a {
     padding: 12px 15px;
     font-size: 14px;
+    position: relative;
+    position: relative;
+  }
+  .main-nav .menu .submenu li a::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s ease;
+  }
+  .main-nav .menu .submenu li a:hover::after {
+    width: 100%;
   }
   .main-nav .menu li.has-submenu:hover .submenu,
   .main-nav .menu li.has-submenu:focus-within .submenu {
@@ -367,8 +399,4 @@ h1.site-title {
 
 .main-content {
   padding-top: 40px;
-}
-
-body {
-  border: 5px dashed red;
 }

@@ -1,0 +1,32 @@
+<% if (typeof imaginiGalerie !== "undefined" && Array.isArray(imaginiGalerie)) { %>
+<section class="galerie-container">
+  <h2>Galerie foto</h2>
+  <div class="galerie-grid">
+    <% let index = 1; %>
+    <% imaginiGalerie.forEach(function(img) { %>
+      <figure class="galerie-item">
+        <picture>
+          <source media="(max-width: 600px)" srcset="<%= caleGalerie + '/mic/' + img.cale_relativa %>">
+          <source media="(max-width: 992px)" srcset="<%= caleGalerie + '/mediu/' + img.cale_relativa %>">
+          <img src="<%= caleGalerie + '/' + img.cale_relativa %>"
+               alt="<%= img.alternativ || img.nume_imag %>"
+               title="<%= img.descriere_imag %>">
+        </picture>
+        <figcaption>
+          <span class="galerie-index"><%= index.toString().padStart(2, '0') %>.</span>
+          <%= img.nume_imag %>
+          <% if (img.atributie) { %>
+            <small class="atributie"> - <%= img.atributie %></small>
+          <% } %>
+        </figcaption>
+      </figure>
+      <% index++; %>
+    <% }); %>
+  </div>
+</section>
+<% } else { %>
+  <section class="galerie-container">
+    <h2>Galerie foto</h2>
+    <p>Galeria nu este disponibilă în acest moment.</p>
+  </section>
+<% } %>

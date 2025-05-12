@@ -21,26 +21,6 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
   transition: $property $duration ease;
 }
 
-// Mixin pentru efect hover
-@mixin hover-effect {
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: $menu-hover-text;
-    @include transition(width, $transition-time);
-  }
-
-  &:hover::after {
-    width: 100%;
-  }
-}
-
 // Mixin pentru media queries
 @mixin media-query($breakpoint) {
   @if $breakpoint == medium {
@@ -89,17 +69,31 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
     li {
       position: relative;
 
-      a {
+      > a {
         display: block;
         padding: 15px 20px;
         color: $menu-text-color;
         text-decoration: none;
-        @include transition(background-color, $transition-time);
-        @include hover-effect;
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background-color: $menu-hover-text;
+          transition: width 0.3s ease;
+        }
 
         &:hover {
           background-color: $menu-hover-bg;
           color: $menu-hover-text;
+
+          &::after {
+            width: 100%;
+          }
         }
       }
 
@@ -108,7 +102,8 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
           position: relative;
           padding-right: 30px;
 
-          &::after {
+          // doar săgeata ▼, fără extra linie de hover
+          &::before {
             content: '▼';
             font-size: 0.8em;
             position: absolute;
@@ -116,21 +111,6 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
             top: 50%;
             transform: translateY(-50%);
           }
-        }
-
-        > a::before {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 0;
-          height: 2px;
-          background-color: $menu-hover-text;
-          @include transition(width, $transition-time);
-        }
-
-        > a:hover::before {
-          width: 100%;
         }
       }
     }
@@ -147,18 +127,35 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
       transform-origin: top center;
       transform: scaleY(0);
       opacity: 0;
-      @include transition(all, $transition-time);
+      transition: all 0.3s ease;
 
       li {
         width: 100%;
 
-        a {
+        > a {
+          display: block;
           padding: 10px 20px;
           color: $submenu-text;
+          position: relative;
+          
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: $submenu-hover-text;
+            transition: width 0.3s ease;
+          }
 
           &:hover {
             background-color: $submenu-hover-bg;
             color: $submenu-hover-text;
+
+            &::after {
+              width: 100%;
+            }
           }
         }
       }
@@ -240,7 +237,7 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
         text-align: center;
         border-bottom: 1px solid $menu-item-border;
 
-        a {
+        > a {
           padding: 15px;
           font-size: 16px;
 
@@ -259,14 +256,10 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
           }
         }
 
-        &.has-submenu > a::after {
+        &.has-submenu > a::before {
           content: '+';
           right: 15px;
           display: block;
-        }
-
-        &.has-submenu > a::before {
-          display: none;
         }
       }
 
@@ -281,9 +274,29 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
         li {
           border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
-          a {
+          > a {
             padding: 12px 15px;
             font-size: 14px;
+            
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 0;
+              height: 2px;
+              background-color: $submenu-hover-text;
+              transition: width 0.3s ease;
+            }
+
+            &:hover {
+              background-color: $submenu-hover-bg;
+              color: $submenu-hover-text;
+
+              &::after {
+                width: 100%;
+              }
+            }
           }
         }
       }
@@ -367,7 +380,7 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
         margin: 0;
         border-bottom: 1px solid $menu-item-border;
 
-        a {
+        > a {
           padding: 15px;
           font-size: 16px;
           @include transition(all, $transition-time);
@@ -381,14 +394,10 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
           }
         }
 
-        &.has-submenu > a::after {
+        &.has-submenu > a::before {
           content: '';
           right: 15px;
           display: block;
-        }
-
-        &.has-submenu > a::before {
-          display: none;
         }
       }
 
@@ -404,9 +413,29 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
         li {
           border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
-          a {
+          > a {
             padding: 12px 15px;
             font-size: 14px;
+            
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 0;
+              height: 2px;
+              background-color: $submenu-hover-text;
+              transition: width 0.3s ease;
+            }
+
+            &:hover {
+              background-color: $submenu-hover-bg;
+              color: $submenu-hover-text;
+
+              &::after {
+                width: 100%;
+              }
+            }
           }
         }
       }
@@ -459,5 +488,3 @@ h1.site-title {
 .main-content {
   padding-top: 40px;
 }
-
-

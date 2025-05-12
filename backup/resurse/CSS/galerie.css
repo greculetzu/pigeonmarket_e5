@@ -1,0 +1,77 @@
+/* Container general */
+.galerie-container {
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Grid mare */
+.galerie-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Format zig-zag cu spatii goale */
+.galerie-item:nth-child(6n+2),
+.galerie-item:nth-child(6n+5) {
+  grid-column: span 2;
+}
+
+/* Responsive: mediu */
+@media (max-width: 992px) {
+  .galerie-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .galerie-item {
+    grid-column: auto !important;
+  }
+}
+/* Responsive: mic */
+@media (max-width: 600px) {
+  .galerie-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* Imagine + efect */
+.galerie-item img {
+  width: 100%;
+  height: auto;
+  filter: brightness(50%);
+  transition: filter 1.2s ease;
+  display: block;
+}
+
+.galerie-item:hover img {
+  filter: brightness(100%);
+}
+
+/* Figcaption + index */
+.galerie-item figcaption {
+  padding: 0.5rem;
+  background-color: #f0f0f0;
+  text-align: center;
+  font-weight: 500;
+  transition: background-color 1.2s ease, color 1.2s ease;
+}
+
+.galerie-item:hover figcaption {
+  background-color: #4BCDDE;
+  color: white;
+}
+
+.galerie-index {
+  font-weight: bold;
+  margin-right: 5px;
+  font-family: monospace;
+}
+
+.atributie {
+  display: block;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #666;
+  margin-top: 0.2rem;
+}

@@ -6,7 +6,6 @@ const path = require("path");
 const fs = require("fs");
 const sass = require("sass");
 
-
 const port = 8080;
 
 // Erori
@@ -14,18 +13,20 @@ global.obGlobal = {
     obErori: null
 };
 
-// === Obiect global cu căile către folderele SCSS și CSS ===
+// Căi foldere
 global.folderScss = path.join(__dirname, "resurse", "SCSS");
 global.folderCss = path.join(__dirname, "resurse", "CSS");
 const folderBackup = path.join(__dirname, "backup");
+const galeriePath = path.join(__dirname, "resurse/json/galerie.json");
 
-// === Creare automată a folderelor dacă nu există ===
+// Creează foldere automat
 [folderBackup, path.join(__dirname, "temp")].forEach(f => {
     if (!fs.existsSync(f)) {
         fs.mkdirSync(f, { recursive: true });
     }
 });
 
+// Compilează SCSS
 function compileazaScss(caleScss, caleCss) {
     const caleAbsolutaScss = path.isAbsolute(caleScss) ? caleScss : path.join(global.folderScss, caleScss);
     const numeFisier = path.basename(caleAbsolutaScss, ".scss");
@@ -60,7 +61,6 @@ function compileazaToateScss() {
 }
 compileazaToateScss();
 
-
 function initErori() {
     const data = fs.readFileSync(path.join(__dirname, "resurse/json/erori.json"));
     const obJson = JSON.parse(data);
@@ -90,9 +90,7 @@ function afisareEroare(res, identificator, titlu, text, imagine) {
 
 initErori();
 
-let vect_foldere = ["temp"]; 
-
-
+let vect_foldere = ["temp"];
 for (let folder of vect_foldere) {
     let caleCompleta = path.join(__dirname, folder);
     if (!fs.existsSync(caleCompleta)) {
@@ -100,7 +98,6 @@ for (let folder of vect_foldere) {
         console.log(`Am creat folderul: ${folder}`);
     }
 }
-
 
 app.listen(port, () => {
     console.log(`Serverul rulează pe http://localhost:${port}`);
@@ -127,28 +124,64 @@ app.use("/resurse", (req, res, next) => {
     }
 });
 
-
-
 app.use("/resurse", express.static(path.join(__dirname, "resurse")));
 
+// === Pagina principală cu galerie filtrată după oră ===
 app.get(["/", "/index", "/home"], (req, res) => {
+    const jsonGalerie = JSON.parse(fs.readFileSync(galeriePath));
+    const oraCurenta = new Date().getHours();
+
+    let imaginiAfisabile = jsonGalerie.imagini.filter(im => {
+        return im.intervale_ore.some(([start, end]) =>
+            oraCurenta >= start && oraCurenta <= end
+        );
+    });
+
+    if (imaginiAfisabile.length % 2 === 1) {
+        imaginiAfisabile.pop();
+    }
+
     res.render("pagini/index", {
         titlu: "PigeonMarket",
-        ip: req.ip
+        ip: req.ip,
+        imaginiGalerie: imaginiAfisabile,
+        caleGalerie: jsonGalerie.cale_galerie
     });
 });
 
-// Favicon
+// === Favicon ===
 app.get("/favicon.ico", (req, res) => {
     res.sendFile(path.join(__dirname, "resurse", "ico", "favicon.ico"));
 });
 
-// Interzis
+// === Protecție .ejs ===
 app.get(/^\/.*\.ejs$/, (req, res) => {
     afisareEroare(res, 400);
 });
 
-// Ruta
+app.get("/galerie", (req, res) => {
+    const jsonGalerie = JSON.parse(fs.readFileSync(galeriePath));
+    const oraCurenta = new Date().getHours();
+
+    let imaginiAfisabile = jsonGalerie.imagini.filter(im => {
+        return im.intervale_ore.some(([start, end]) =>
+            oraCurenta >= start && oraCurenta <= end
+        );
+    });
+
+    if (imaginiAfisabile.length % 2 === 1) {
+        imaginiAfisabile.pop();
+    }
+
+    res.render("pagini/galerie", {
+        titlu: "Galerie",
+        ip: req.ip,
+        imaginiGalerie: imaginiAfisabile,
+        caleGalerie: jsonGalerie.cale_galerie
+    });
+});
+
+// === Orice altă pagină ===
 app.get(/^\/(?<pagina>[^\/]+)$/, (req, res) => {
     let pagina = req.params.pagina;
 
@@ -168,6 +201,9 @@ app.get(/^\/(?<pagina>[^\/]+)$/, (req, res) => {
     });
 });
 
+
+
+// === Watch SCSS ===
 fs.watch(global.folderScss, { recursive: true }, (eventType, filename) => {
     if (filename && filename.endsWith(".scss")) {
         setTimeout(() => {
@@ -181,6 +217,5 @@ fs.watch(global.folderScss, { recursive: true }, (eventType, filename) => {
 });
 
 compileazaScss("custom.scss");
-
-
+compileazaScss("galerie.scss");
 
