@@ -19,6 +19,7 @@
   "author": "Dobrescu Andrei-Alexandru",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^5.3.6",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "sass": "^1.88.0",

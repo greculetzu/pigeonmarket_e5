@@ -180,5 +180,7 @@ fs.watch(global.folderScss, { recursive: true }, (eventType, filename) => {
     }
 });
 
+compileazaScss("custom.scss");
+
 
 

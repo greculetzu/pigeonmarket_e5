@@ -1,0 +1,28 @@
+// Suprascriem variabile înainte de importul Bootstrap
+$theme-colors: (
+  "primary": #4BCDDE,
+  "secondary": #4B9FDE,
+  "dark": #222,
+  "light": #f8f9fa
+);
+
+// Alte customizări
+$font-family-base: 'Segoe UI', sans-serif;
+$border-radius: 1rem;
+$h1-font-size: 2.8rem;
+$h2-font-size: 2.2rem;
+$body-color: #111;
+$body-bg: #fefefe;
+
+// Dimensiuni de ecran diferite
+$grid-breakpoints: (
+  sm: 540px,
+  md: 800px,
+  lg: 1200px
+);
+
+// Variabilă proprie
+$custom-spacer: 3rem;
+
+// Import Bootstrap
+@import "../../node_modules/bootstrap/scss/bootstrap";
