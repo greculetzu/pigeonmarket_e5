@@ -1,3 +1,5 @@
+@use "sass:color"; // folosim noul modul pentru ajustări de culoare
+
 // Variabile SCSS
 $menu-background: #000;
 $menu-text-color: #fff;
@@ -116,20 +118,6 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
           }
         }
 
-        // Stil pentru hover
-        > a::after {
-          content: '▼';
-          font-size: 0.8em;
-          position: absolute;
-          right: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-          width: auto;
-          height: auto;
-          background-color: transparent;
-        }
-
-        // Linie hover
         > a::before {
           content: '';
           position: absolute;
@@ -182,9 +170,7 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
     }
   }
 
-  // Media query pentru ecrane medii
   @include media-query(medium) {
-    // Bara fixa sus
     &::before {
       content: '';
       display: block;
@@ -206,37 +192,32 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
       padding: 5px;
 
       span {
-        display: block;
         width: 20px;
         height: 2px;
-        background-color: $burger-color;
         margin: 3px 0;
+        background-color: $burger-color;
         @include transition(all, $transition-time);
       }
     }
 
-    .menu-toggle:checked {
-      ~ .menu-icon {
-        span {
-          &:nth-child(1) {
-            transform: rotate(45deg) translate(4px, 4px);
-          }
-
-          &:nth-child(2) {
-            opacity: 0;
-          }
-
-          &:nth-child(3) {
-            transform: rotate(-45deg) translate(4px, -4px);
-          }
-        }
+    .menu-toggle:checked ~ .menu-icon span {
+      &:nth-child(1) {
+        transform: rotate(45deg) translate(4px, 4px);
       }
 
-      ~ .menu {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
+      &:nth-child(2) {
+        opacity: 0;
       }
+
+      &:nth-child(3) {
+        transform: rotate(-45deg) translate(4px, -4px);
+      }
+    }
+
+    .menu-toggle:checked ~ .menu {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
     }
 
     .menu {
@@ -262,7 +243,6 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
         a {
           padding: 15px;
           font-size: 16px;
-          text-align: center;
 
           &::after {
             display: none;
@@ -279,23 +259,20 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
           }
         }
 
-        &.has-submenu {
-          > a::after {
-            content: '+';
-            right: 15px;
-            display: block;
-          }
+        &.has-submenu > a::after {
+          content: '+';
+          right: 15px;
+          display: block;
+        }
 
-          > a::before {
-            display: none;
-          }
+        &.has-submenu > a::before {
+          display: none;
         }
       }
 
       .submenu {
         position: static;
         width: 100%;
-        min-width: auto;
         transform: scaleY(0);
         max-height: 0;
         overflow: hidden;
@@ -307,7 +284,6 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
           a {
             padding: 12px 15px;
             font-size: 14px;
-            text-align: center;
           }
         }
       }
@@ -320,9 +296,7 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
     }
   }
 
-  // Media query pentru ecrane mici
   @include media-query(small) {
-    // Bara de navigare sus
     &::before {
       content: '';
       display: block;
@@ -350,28 +324,24 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
       }
     }
 
-    .menu-toggle:checked {
-      ~ .menu-icon {
-        span {
-          &:nth-child(1) {
-            transform: rotate(45deg) translate(4px, 4px);
-          }
-
-          &:nth-child(2) {
-            opacity: 0;
-          }
-
-          &:nth-child(3) {
-            transform: rotate(-45deg) translate(4px, -4px);
-          }
-        }
+    .menu-toggle:checked ~ .menu-icon span {
+      &:nth-child(1) {
+        transform: rotate(45deg) translate(4px, 4px);
       }
 
-      ~ .menu {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
+      &:nth-child(2) {
+        opacity: 0;
       }
+
+      &:nth-child(3) {
+        transform: rotate(-45deg) translate(4px, -4px);
+      }
+    }
+
+    .menu-toggle:checked ~ .menu {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
     }
 
     .menu {
@@ -401,9 +371,6 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
           padding: 15px;
           font-size: 16px;
           @include transition(all, $transition-time);
-          display: block;
-          width: 100%;
-          text-align: center;
 
           &::after {
             display: none;
@@ -414,17 +381,14 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
           }
         }
 
-        &.has-submenu {
-          > a::after {
-            content: '';
-            right: 15px;
-            display: block;
-            font-size: 16px;
-          }
+        &.has-submenu > a::after {
+          content: '';
+          right: 15px;
+          display: block;
+        }
 
-          > a::before {
-            display: none;
-          }
+        &.has-submenu > a::before {
+          display: none;
         }
       }
 
@@ -443,7 +407,6 @@ $menu-item-border: rgba(255, 255, 255, 0.1);
           a {
             padding: 12px 15px;
             font-size: 14px;
-            text-align: center;
           }
         }
       }
@@ -479,11 +442,11 @@ h1.site-title {
   letter-spacing: 0.5px;
 }
 
-// Efect submeniu
+// ✅ Efect submeniu cu color.adjust()
 @for $i from 1 through 5 {
   .main-nav .menu > li:nth-child(#{$i}) .submenu {
     animation-delay: $i * 0.05s;
-    border-top: 2px solid adjust-hue($menu-hover-bg, $i * 30);
+    border-top: 2px solid color.adjust($menu-hover-bg, $hue: $i * 30);
   }
 }
 
@@ -496,3 +459,8 @@ h1.site-title {
 .main-content {
   padding-top: 40px;
 }
+
+body {
+  border: 5px dashed red;
+}
+

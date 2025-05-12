@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 const path = require("path");
 const fs = require("fs");
+const sass = require("sass");
+
 
 const port = 8080;
 
@@ -166,9 +168,17 @@ app.get(/^\/(?<pagina>[^\/]+)$/, (req, res) => {
     });
 });
 
-fs.watch(global.folderScss, (event, filename) => {
+fs.watch(global.folderScss, { recursive: true }, (eventType, filename) => {
     if (filename && filename.endsWith(".scss")) {
-        console.log(`SCSS modificat: ${filename}`);
-        compileazaScss(filename);
+        setTimeout(() => {
+            try {
+                compileazaScss(filename);
+            } catch (e) {
+                console.error(`Eroare la compilarea SCSS:`, e);
+            }
+        }, 100);
     }
 });
+
+
+
