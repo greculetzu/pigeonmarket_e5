@@ -12,6 +12,53 @@ global.obGlobal = {
     obErori: null
 };
 
+// === Obiect global cu căile către folderele SCSS și CSS ===
+global.folderScss = path.join(__dirname, "resurse", "SCSS");
+global.folderCss = path.join(__dirname, "resurse", "CSS");
+const folderBackup = path.join(__dirname, "backup");
+
+// === Creare automată a folderelor dacă nu există ===
+[folderBackup, path.join(__dirname, "temp")].forEach(f => {
+    if (!fs.existsSync(f)) {
+        fs.mkdirSync(f, { recursive: true });
+    }
+});
+
+function compileazaScss(caleScss, caleCss) {
+    const caleAbsolutaScss = path.isAbsolute(caleScss) ? caleScss : path.join(global.folderScss, caleScss);
+    const numeFisier = path.basename(caleAbsolutaScss, ".scss");
+    const caleAbsolutaCss = caleCss
+        ? (path.isAbsolute(caleCss) ? caleCss : path.join(global.folderCss, caleCss))
+        : path.join(global.folderCss, numeFisier + ".css");
+
+    const caleBackup = path.join(folderBackup, "resurse", "CSS");
+    const caleBackupCss = path.join(caleBackup, numeFisier + ".css");
+
+    try {
+        if (fs.existsSync(caleAbsolutaCss)) {
+            fs.mkdirSync(caleBackup, { recursive: true });
+            fs.copyFileSync(caleAbsolutaCss, caleBackupCss);
+            console.log(`Backup salvat pentru ${numeFisier}.css`);
+        }
+
+        const rez = sass.compile(caleAbsolutaScss, { style: "expanded" });
+        fs.writeFileSync(caleAbsolutaCss, rez.css);
+        console.log(`Compilat: ${caleAbsolutaScss} → ${caleAbsolutaCss}`);
+    } catch (err) {
+        console.error(`Eroare la compilare SCSS pentru ${numeFisier}:`, err);
+    }
+}
+
+function compileazaToateScss() {
+    fs.readdirSync(global.folderScss).forEach(f => {
+        if (f.endsWith(".scss")) {
+            compileazaScss(f);
+        }
+    });
+}
+compileazaToateScss();
+
+
 function initErori() {
     const data = fs.readFileSync(path.join(__dirname, "resurse/json/erori.json"));
     const obJson = JSON.parse(data);
@@ -117,4 +164,11 @@ app.get(/^\/(?<pagina>[^\/]+)$/, (req, res) => {
             res.send(html);
         }
     });
+});
+
+fs.watch(global.folderScss, (event, filename) => {
+    if (filename && filename.endsWith(".scss")) {
+        console.log(`SCSS modificat: ${filename}`);
+        compileazaScss(filename);
+    }
 });
