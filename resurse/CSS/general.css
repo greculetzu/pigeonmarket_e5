@@ -619,3 +619,46 @@ main a:active {
 main a:visited {
     color: var(--accent-color-1); /* Vizitat */
 }
+
+.container-reflexie{
+    display: flex;
+    justify-content: left;
+    margin: 60px auto 90px auto;
+    font-style: italic;
+}
+
+.container-reflexie:hover{
+    color:#4BDE8D;
+    text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
+}
+
+#text{
+    transform: rotateZ(-30deg) skewX(-27deg);
+    margin-right: 5px;
+    transition: color 1s ease;
+}
+
+#text-reflectat{
+    transform: rotateZ(30deg) rotateY(180deg) skewX(-27deg);
+    margin-left: 5px;
+    transition: color 1s ease;
+}
+
+#exercitiu-hr{
+    border: none;
+  height: 12px;
+  background: linear-gradient(
+    to right,
+    #1a2b5e 0%,
+    transparent 10%,
+    #2d499b 30%,
+    #263c7d 55%,
+    #1e3167 70%,
+    #1a2b5e 85%
+
+  );
+  width: 100%;
+  margin: 2rem 0;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 0% 100%);
+}
+

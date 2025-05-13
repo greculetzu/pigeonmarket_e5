@@ -126,62 +126,61 @@ app.use("/resurse", (req, res, next) => {
 
 app.use("/resurse", express.static(path.join(__dirname, "resurse")));
 
-// === Pagina principală cu galerie filtrată după oră ===
-app.get(["/", "/index", "/home"], (req, res) => {
+function obtineImaginiAfisabile() {
     const jsonGalerie = JSON.parse(fs.readFileSync(galeriePath));
     const oraCurenta = new Date().getHours();
 
-    let imaginiAfisabile = jsonGalerie.imagini.filter(im => {
-        return im.intervale_ore.some(([start, end]) =>
-            oraCurenta >= start && oraCurenta <= end
-        );
-    });
+    let imaginiAfisabile = [];
 
-    if (imaginiAfisabile.length % 2 === 1) {
+    for (let img of jsonGalerie.imagini) {
+        for (let interval of img.intervale_ore) {
+            let start = Number(interval[0]);
+            let end = Number(interval[1]);
+            if (oraCurenta >= start && oraCurenta <= end) {
+                imaginiAfisabile.push(img);
+                break;
+            }
+        }
+    }
+
+    if (imaginiAfisabile.length > 1 && imaginiAfisabile.length % 2 === 1) {
         imaginiAfisabile.pop();
     }
+
+    return { imaginiAfisabile, caleGalerie: jsonGalerie.cale_galerie };
+}
+
+// Pagina principală
+app.get(["/", "/index", "/home"], (req, res) => {
+    const { imaginiAfisabile, caleGalerie } = obtineImaginiAfisabile();
 
     res.render("pagini/index", {
         titlu: "PigeonMarket",
         ip: req.ip,
         imaginiGalerie: imaginiAfisabile,
-        caleGalerie: jsonGalerie.cale_galerie
+        caleGalerie: caleGalerie
     });
-});
-
-// === Favicon ===
-app.get("/favicon.ico", (req, res) => {
-    res.sendFile(path.join(__dirname, "resurse", "ico", "favicon.ico"));
-});
-
-// === Protecție .ejs ===
-app.get(/^\/.*\.ejs$/, (req, res) => {
-    afisareEroare(res, 400);
 });
 
 app.get("/galerie", (req, res) => {
-    const jsonGalerie = JSON.parse(fs.readFileSync(galeriePath));
-    const oraCurenta = new Date().getHours();
-
-    let imaginiAfisabile = jsonGalerie.imagini.filter(im => {
-        return im.intervale_ore.some(([start, end]) =>
-            oraCurenta >= start && oraCurenta <= end
-        );
-    });
-
-    if (imaginiAfisabile.length % 2 === 1) {
-        imaginiAfisabile.pop();
-    }
+    const { imaginiAfisabile, caleGalerie } = obtineImaginiAfisabile();
 
     res.render("pagini/galerie", {
         titlu: "Galerie",
         ip: req.ip,
         imaginiGalerie: imaginiAfisabile,
-        caleGalerie: jsonGalerie.cale_galerie
+        caleGalerie: caleGalerie
     });
 });
 
-// === Orice altă pagină ===
+app.get("/favicon.ico", (req, res) => {
+    res.sendFile(path.join(__dirname, "resurse", "ico", "favicon.ico"));
+});
+
+app.get(/^\/.*\.ejs$/, (req, res) => {
+    afisareEroare(res, 400);
+});
+
 app.get(/^\/(?<pagina>[^\/]+)$/, (req, res) => {
     let pagina = req.params.pagina;
 
@@ -201,9 +200,6 @@ app.get(/^\/(?<pagina>[^\/]+)$/, (req, res) => {
     });
 });
 
-
-
-// === Watch SCSS ===
 fs.watch(global.folderScss, { recursive: true }, (eventType, filename) => {
     if (filename && filename.endsWith(".scss")) {
         setTimeout(() => {
@@ -218,4 +214,3 @@ fs.watch(global.folderScss, { recursive: true }, (eventType, filename) => {
 
 compileazaScss("custom.scss");
 compileazaScss("galerie.scss");
-

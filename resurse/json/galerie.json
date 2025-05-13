@@ -6,7 +6,7 @@
       "nume_imag": "Porumbei drăguți",
       "alternativ": "Porumbei care se odihnesc",
       "descriere_imag": "Câțiva porumbei care se odihnesc",
-      "intervale_ore": [[0, 23]],
+      "intervale_ore": [[0, 11]],  
       "atributie": "Fotografie de pe internet"
     },
     {
@@ -14,7 +14,7 @@
       "nume_imag": "Porumbel alb",
       "descriere_imag": "Imagine cu un porumbel alb zburând",
       "alternativ": "Porumbel alb",
-      "intervale_ore": [[0, 23]]
+      "intervale_ore": [[12, 23]]  
     }
   ]
 }

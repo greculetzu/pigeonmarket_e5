@@ -1,0 +1,27 @@
+.reflected-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  perspective: 1000px;
+
+  .reflected-text {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #2c5c73;
+    transition: color 1.2s ease;
+
+    &.reflect {
+      position: absolute;
+      left: 100%;
+      top: 0;
+      transform: scaleX(-1);
+      color: inherit;
+      opacity: 0.6;
+      pointer-events: none; // să nu blocheze hover-ul
+    }
+  }
+
+  &:hover .reflected-text {
+    color: #000;
+  }
+}
